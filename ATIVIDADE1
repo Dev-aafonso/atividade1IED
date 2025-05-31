@@ -1,0 +1,63 @@
+nomes = []      # Lista para coletar nomes
+cidades = []    # Lista para coletar cidades
+usuarios = []   # Lista para armazenar objetos da classe Usuario
+
+# Classe utilizada para armazenar as informações do usuário
+class Usuario:
+    def _init_(self, nome, cidade, tem_transporte, tipo_transporte=None):
+        self.nome = nome
+        self.cidade = cidade
+        self.tem_transporte = tem_transporte
+        self.tipo_transporte = tipo_transporte
+
+    def to_dict(self):
+        if self.tem_transporte:
+            transporte = self.tipo_transporte
+            tem_transporte_s = "Sim"
+        else:
+            transporte = "Nenhum"
+            tem_transporte_s = "Não"
+
+        return {
+            "nome": self.nome,
+            "cidade": self.cidade,
+            "tem_transporte": tem_transporte_s,
+            "tipo_transporte": transporte
+        }
+#Laço externo para cadastrar diversos usuário.
+while True: 
+# Parte do código que coleta as informações do usuário
+    print("==** FORMULÁRIO DE CADASTRO **==")
+    nome = input("Digite seu nome: ")
+    nomes.append(nome)
+
+    cidade = input("Digite o nome de sua cidade: ")
+    cidades.append(cidade)
+
+    resposta = input("Você possui transporte (sim/não): ")
+    tem_transporte = resposta == "sim"
+
+    tipo_transporte = None
+    if tem_transporte:
+        tipo_transporte = input("Qual o tipo do seu transporte? Ex: carro, moto, etc.: ")
+
+    # Criando um objeto do usuário e adicionando à lista
+    usuario_obj = Usuario(nome, cidade, tem_transporte, tipo_transporte)
+    usuarios.append(usuario_obj)
+
+    continuar = input("Deseja cadastrar outro usuário? (sim/nnão): ")
+    if continuar != "sim":
+        break
+
+    # Criando um dicionário com todas as informações
+    dados_gerais = {
+    "nomes": nomes,
+    "usuarios": [u.to_dict() for u in usuarios]
+    }
+
+    # Exibindo os dados coletados
+    print("\n==** DADOS COLETADOS **==")
+    print("Nomes:", dados_gerais["nomes"])
+    print("Usuários:")
+    for usuario_dict in dados_gerais["usuarios"]:
+        print(usuario_dict)
